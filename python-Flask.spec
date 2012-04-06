@@ -4,7 +4,6 @@
 
 %define 	module	Flask
 Summary:	A microframework based on Werkzeug, Jinja2 and good intentions
-#Summary(pl.UTF-8):	-
 Name:		python-%{module}
 Version:	0.8
 Release:	0.1
@@ -17,20 +16,16 @@ BuildRequires:	python-Jinja2 >= 2.4
 BuildRequires:	python-Werkzeug >= 0.6.1
 BuildRequires:	python-distribute
 BuildRequires:	rpm-pythonprov
-# if py_postclean is used
 BuildRequires:	rpmbuild(macros) >= 1.219
 Requires:	python-Jinja2 >= 2.4
 Requires:	python-Werkzeug >= 0.6.1
-#Requires:		python-libs
-Requires:		python-modules
+Requires:	python-modules
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 Flask is a microframework for Python based on Werkzeug, Jinja 2 and
 good intentions.
-
-#description -l pl.UTF-8
 
 %prep
 %setup -q -n %{module}-%{version}
