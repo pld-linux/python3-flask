@@ -10,7 +10,7 @@
 Summary:	A microframework based on Werkzeug, Jinja2 and good intentions
 Name:		python-%{module}
 Version:	0.10.1
-Release:	3
+Release:	4
 License:	BSD
 Group:		Development/Languages/Python
 # https://pypi.python.org/packages/source/F/Flask/Flask-0.10.1.tar.gz
