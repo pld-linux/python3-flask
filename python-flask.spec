@@ -24,7 +24,7 @@ BuildRequires:	python-distribute
 BuildRequires:	python-jinja2 >= 2.4
 BuildRequires:	python-werkzeug >= 0.6.1
 BuildRequires:	rpm-pythonprov
-BuildRequires:	rpmbuild(macros) >= 1.219
+BuildRequires:	rpmbuild(macros) >= 1.710
 
 %endif
 %if %{with python3}
