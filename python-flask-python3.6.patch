@@ -1,0 +1,40 @@
+From 01b992b1a1482246d705ffe3b3d0dd7816f0456b Mon Sep 17 00:00:00 2001
+From: Andrew Arendt <AndrewArendt@gmail.com>
+Date: Tue, 10 Jan 2017 11:20:53 -0600
+Subject: [PATCH] Added python3.6 support for tests
+
+---
+ .travis.yml         | 6 +++++-
+ tests/test_basic.py | 2 +-
+ tests/test_ext.py   | 4 ++--
+ tox.ini             | 2 +-
+ 4 files changed, 9 insertions(+), 5 deletions(-)
+
+diff --git a/tests/test_basic.py b/tests/test_basic.py
+index be3d5ed..a099c90 100644
+--- a/tests/test_basic.py
++++ b/tests/test_basic.py
+@@ -333,7 +333,7 @@ def test():
+     client = app.test_client()
+     rv = client.get('/')
+     assert 'set-cookie' in rv.headers
+-    match = re.search(r'\bexpires=([^;]+)(?i)', rv.headers['set-cookie'])
++    match = re.search(r'(?i)\bexpires=([^;]+)', rv.headers['set-cookie'])
+     expires = parse_date(match.group())
+     expected = datetime.utcnow() + app.permanent_session_lifetime
+     assert expires.year == expected.year
+diff --git a/tests/test_ext.py b/tests/test_ext.py
+index d336e40..ebb5f02 100644
+--- a/tests/test_ext.py
++++ b/tests/test_ext.py
+@@ -179,8 +179,8 @@ def test_flaskext_broken_package_no_module_caching(flaskext_broken):
+ def test_no_error_swallowing(flaskext_broken):
+     with pytest.raises(ImportError) as excinfo:
+         import flask.ext.broken
+-
+-    assert excinfo.type is ImportError
++    # python3.6 raises a subclass of ImportError: 'ModuleNotFoundError'
++    assert issubclass(excinfo.type, ImportError)
+     if PY2:
+         message = 'No module named missing_module'
+     else:
