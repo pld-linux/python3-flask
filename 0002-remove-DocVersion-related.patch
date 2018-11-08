@@ -1,0 +1,33 @@
+From 067c772588f69f397eeff70019320506b47bb239 Mon Sep 17 00:00:00 2001
+From: chengkang <1412950785@qq.com>
+Date: Mon, 17 Sep 2018 21:05:53 +0800
+Subject: [PATCH] remove DocVersion related
+Origin: https://github.com/pallets/flask/commit/067c772588f69f397eeff70019320506b47bb239
+
+---
+ docs/conf.py | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
+
+--- a/docs/conf.py
++++ b/docs/conf.py
+@@ -4,7 +4,7 @@
+ import inspect
+ import re
+ 
+-from pallets_sphinx_themes import DocVersion, ProjectLink, get_version
++from pallets_sphinx_themes import ProjectLink, get_version
+ 
+ # Project --------------------------------------------------------------
+ 
+@@ -45,11 +45,6 @@
+         ProjectLink(
+             'Issue Tracker', 'https://github.com/pallets/flask/issues/'),
+     ],
+-    'versions': [
+-        DocVersion('dev', 'Development', 'unstable'),
+-        DocVersion('1.0', 'Flask 1.0', 'stable'),
+-        DocVersion('0.12', 'Flask 0.12'),
+-    ],
+     'canonical_url': 'http://flask.pocoo.org/docs/{}/'.format(version),
+     'carbon_ads_args': 'zoneid=1673&serve=C6AILKT&placement=pocooorg',
+ }

@@ -9,14 +9,17 @@
 Summary:	A microframework based on Werkzeug, Jinja2 and good intentions
 Summary(pl.UTF-8):	Mikroszkielet oparty na Werkzeugu, Jinja2 i dobrych intencjach
 Name:		python-%{module}
-Version:	0.12
-Release:	2
+Version:	1.0.2
+Release:	1
 License:	BSD
 Group:		Development/Languages/Python
 #Source0Download: https://pypi.python.org/simple/Flask
 Source0:	https://files.pythonhosted.org/packages/source/F/Flask/Flask-%{version}.tar.gz
-# Source0-md5:	c1d30f51cff4a38f9454b23328a15c5a
-Patch0:		%{name}-python3.6.patch
+# Source0-md5:	824f0f20aae1f44c9c7dc4054adb7969
+Patch0:		0001-Don-t-require-sphinxcontrib.log_cabinet-extension.patch
+Patch1:		0002-remove-DocVersion-related.patch
+Patch2:		0003-fix-issue-no-theme-named-flask-found.patch
+Patch3:		0004-empty-CONTRIBUTING-rst.patch
 URL:		http://flask.pocoo.org/
 %if %{with tests} && %(locale -a | grep -q '^C\.UTF-8$'; echo $?)
 BuildRequires:	glibc-localedb-all
@@ -86,6 +89,9 @@ Dokumentacja do pakietu Pythona Flask.
 %prep
 %setup -q -n Flask-%{version}
 %patch0 -p1
+%patch1 -p1
+%patch2 -p1
+%patch3 -p1
 
 %build
 %if %{with python2}
@@ -135,7 +141,7 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with python2}
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS CHANGES LICENSE README
+%doc AUTHORS CHANGES.rst LICENSE README.rst
 %attr(755,root,root) %{_bindir}/flask
 %attr(755,root,root) %{_bindir}/flask-2
 %{py_sitescriptdir}/flask
@@ -148,7 +154,7 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with python3}
 %files -n python3-%{module}
 %defattr(644,root,root,755)
-%doc AUTHORS CHANGES LICENSE README
+%doc AUTHORS CHANGES.rst LICENSE README.rst
 %attr(755,root,root) %{_bindir}/flask-3
 %{py3_sitescriptdir}/flask
 %{py3_sitescriptdir}/Flask-%{version}-py*.egg-info

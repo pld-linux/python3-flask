@@ -1,0 +1,20 @@
+From 3e86fd25e9638898618cda8352402f4281bf809b Mon Sep 17 00:00:00 2001
+From: chengkang <1412950785@qq.com>
+Date: Mon, 17 Sep 2018 16:18:52 +0800
+Subject: [PATCH] fix issue: no theme named 'flask' found
+Origin: https://github.com/pallets/flask/commit/3e86fd25e9638898618cda8352402f4281bf809b
+
+---
+ docs/conf.py | 1 +
+ 1 file changed, 1 insertion(+)
+
+--- a/docs/conf.py
++++ b/docs/conf.py
+@@ -20,6 +20,7 @@
+ extensions = [
+     'sphinx.ext.autodoc',
+     'sphinx.ext.intersphinx',
++    'pallets_sphinx_themes',
+ ]
+ 
+ intersphinx_mapping = {
