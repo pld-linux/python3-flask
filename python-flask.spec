@@ -10,7 +10,7 @@ Summary:	A microframework based on Werkzeug, Jinja2 and good intentions
 Summary(pl.UTF-8):	Mikroszkielet oparty na Werkzeugu, Jinja2 i dobrych intencjach
 Name:		python-%{module}
 Version:	1.0.2
-Release:	2
+Release:	3
 License:	BSD
 Group:		Development/Languages/Python
 #Source0Download: https://pypi.python.org/simple/Flask
