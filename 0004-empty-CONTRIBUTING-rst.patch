@@ -1,8 +1,0 @@
-Author: Ondřej Nový <onovy@debian.org>
-Description: Add empty CONTRIBUTING.rst
-Forwarded: sort of, https://github.com/pallets/flask/pull/2913
-
---- /dev/null
-+++ b/CONTRIBUTING.rst
-@@ -0,0 +1 @@
-+

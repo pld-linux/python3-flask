@@ -9,17 +9,15 @@
 Summary:	A microframework based on Werkzeug, Jinja2 and good intentions
 Summary(pl.UTF-8):	Mikroszkielet oparty na Werkzeugu, Jinja2 i dobrych intencjach
 Name:		python-%{module}
-Version:	1.0.2
-Release:	3
+Version:	1.1.1
+Release:	1
 License:	BSD
 Group:		Development/Languages/Python
 #Source0Download: https://pypi.python.org/simple/Flask
-Source0:	https://files.pythonhosted.org/packages/source/F/Flask/Flask-%{version}.tar.gz
-# Source0-md5:	824f0f20aae1f44c9c7dc4054adb7969
+# Source0:	https://files.pythonhosted.org/packages/source/F/Flask/Flask-%{version}.tar.gz
+Source0:	https://pypi.debian.net/Flask/Flask-%{version}.tar.gz
+# Source0-md5:	0e3ed44ece1c489ed835d1b7047e349c
 Patch0:		0001-Don-t-require-sphinxcontrib.log_cabinet-extension.patch
-Patch1:		0002-remove-DocVersion-related.patch
-Patch2:		0003-fix-issue-no-theme-named-flask-found.patch
-Patch3:		0004-empty-CONTRIBUTING-rst.patch
 URL:		http://flask.pocoo.org/
 %if %{with tests} && %(locale -a | grep -q '^C\.UTF-8$'; echo $?)
 BuildRequires:	glibc-localedb-all
@@ -32,7 +30,7 @@ BuildRequires:	python-jinja2 >= 2.4
 BuildRequires:	python-modules >= 1:2.6
 BuildRequires:	python-pytest
 BuildRequires:	python-setuptools
-BuildRequires:	python-werkzeug >= 0.7
+BuildRequires:	python-werkzeug >= 0.15
 %endif
 %if %{with python3}
 BuildRequires:	python3-click >= 2.0
@@ -42,7 +40,7 @@ BuildRequires:	python3-jinja2 >= 2.4
 BuildRequires:	python3-modules >= 1:3.3
 BuildRequires:	python3-pytest
 BuildRequires:	python3-setuptools
-BuildRequires:	python3-werkzeug >= 0.7
+BuildRequires:	python3-werkzeug >= 0.15
 %endif
 %if %{with doc}
 BuildRequires:	sphinx-pdg
@@ -89,21 +87,18 @@ Dokumentacja do pakietu Pythona Flask.
 %prep
 %setup -q -n Flask-%{version}
 %patch0 -p1
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
 
 %build
 %if %{with python2}
 %py_build
 
-%{?with_tests:%{__python} -m pytest tests}
+%{?with_tests:PYTHONPATH=$(pwd)/build-2/lib %{__python} -m pytest tests}
 %endif
 
 %if %{with python3}
 %py3_build
 
-%{?with_tests:LC_ALL=C.UTF-8 %{__python3} -m pytest tests}
+%{?with_tests:LC_ALL=C.UTF-8 PYTHONPATH=$(pwd)/build-3/lib %{__python3} -m pytest tests}
 %endif
 
 %if %{with doc}
@@ -141,7 +136,7 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with python2}
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS CHANGES.rst LICENSE README.rst
+%doc CHANGES.rst LICENSE.rst README.rst
 %attr(755,root,root) %{_bindir}/flask
 %attr(755,root,root) %{_bindir}/flask-2
 %{py_sitescriptdir}/flask
@@ -154,7 +149,7 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with python3}
 %files -n python3-%{module}
 %defattr(644,root,root,755)
-%doc AUTHORS CHANGES.rst LICENSE README.rst
+%doc CHANGES.rst LICENSE.rst README.rst
 %attr(755,root,root) %{_bindir}/flask-3
 %{py3_sitescriptdir}/flask
 %{py3_sitescriptdir}/Flask-%{version}-py*.egg-info
