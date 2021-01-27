@@ -9,45 +9,50 @@
 Summary:	A microframework based on Werkzeug, Jinja2 and good intentions
 Summary(pl.UTF-8):	Mikroszkielet oparty na Werkzeugu, Jinja2 i dobrych intencjach
 Name:		python-%{module}
-Version:	1.1.1
+Version:	1.1.2
 Release:	1
 License:	BSD
 Group:		Development/Languages/Python
 #Source0Download: https://pypi.python.org/simple/Flask
-# Source0:	https://files.pythonhosted.org/packages/source/F/Flask/Flask-%{version}.tar.gz
-Source0:	https://pypi.debian.net/Flask/Flask-%{version}.tar.gz
-# Source0-md5:	0e3ed44ece1c489ed835d1b7047e349c
+Source0:	https://files.pythonhosted.org/packages/source/F/Flask/Flask-%{version}.tar.gz
+# Source0-md5:	0da4145d172993cd28a6c619630cc19c
 Patch0:		0001-Don-t-require-sphinxcontrib.log_cabinet-extension.patch
-URL:		http://flask.pocoo.org/
+URL:		https://flask.palletsprojects.com/
 %if %{with tests} && %(locale -a | grep -q '^C\.UTF-8$'; echo $?)
 BuildRequires:	glibc-localedb-all
 %endif
 %if %{with python2}
-BuildRequires:	python-click >= 2.0
-BuildRequires:	python-devel >= 1:2.6
-BuildRequires:	python-itsdangerous >= 0.21
-BuildRequires:	python-jinja2 >= 2.4
+BuildRequires:	python-devel >= 1:2.7
 BuildRequires:	python-modules >= 1:2.6
-BuildRequires:	python-pytest
 BuildRequires:	python-setuptools
+%if %{with tests}
+BuildRequires:	python-click >= 5.1
+BuildRequires:	python-itsdangerous >= 0.24
+BuildRequires:	python-jinja2 >= 2.10.1
+BuildRequires:	python-pytest
 BuildRequires:	python-werkzeug >= 0.15
 %endif
+%endif
 %if %{with python3}
-BuildRequires:	python3-click >= 2.0
-BuildRequires:	python3-devel >= 1:3.3
-BuildRequires:	python3-itsdangerous >= 0.21
-BuildRequires:	python3-jinja2 >= 2.4
+BuildRequires:	python3-devel >= 1:3.5
 BuildRequires:	python3-modules >= 1:3.3
-BuildRequires:	python3-pytest
 BuildRequires:	python3-setuptools
+%if %{with tests}
+BuildRequires:	python3-click >= 5.1
+BuildRequires:	python3-itsdangerous >= 0.24
+BuildRequires:	python3-jinja2 >= 2.10.1
+BuildRequires:	python3-pytest
 BuildRequires:	python3-werkzeug >= 0.15
 %endif
+%endif
 %if %{with doc}
-BuildRequires:	sphinx-pdg
+BuildRequires:	python3-pallets-sphinx-themes
+BuildRequires:	python3-sphinx_issues
+BuildRequires:	sphinx-pdg-3
 %endif
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.714
-Requires:	python-modules >= 1:2.6
+Requires:	python-modules >= 1:2.7
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -63,7 +68,7 @@ Jinja2 oraz dobrych intencjach.
 Summary:	A microframework based on Werkzeug, Jinja2 and good intentions
 Summary(pl.UTF-8):	Mikroszkielet oparty na Werkzeugu, Jinja2 i dobrych intencjach
 Group:		Libraries/Python
-Requires:	python3-modules >= 1:3.3
+Requires:	python3-modules >= 1:3.5
 
 %description -n python3-%{module}
 Flask is a microframework for Python based on Werkzeug, Jinja 2 and
@@ -92,18 +97,27 @@ Dokumentacja do pakietu Pythona Flask.
 %if %{with python2}
 %py_build
 
-%{?with_tests:PYTHONPATH=$(pwd)/build-2/lib %{__python} -m pytest tests}
+%if %{with tests}
+PYTHONPATH=$(pwd)/src \
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
+%{__python} -m pytest tests
+%endif
 %endif
 
 %if %{with python3}
 %py3_build
 
-%{?with_tests:LC_ALL=C.UTF-8 PYTHONPATH=$(pwd)/build-3/lib %{__python3} -m pytest tests}
+%if %{with tests}
+PYTHONPATH=$(pwd)/src \
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
+%{__python3} -m pytest tests
+%endif
 %endif
 
 %if %{with doc}
-PYTHONPATH=$(pwd) \
-%{__make} -C docs html
+PYTHONPATH=$(pwd)/src \
+%{__make} -C docs html \
+	SPHINXBUILD=sphinx-build-3
 %endif
 
 %install
@@ -140,9 +154,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/flask
 %attr(755,root,root) %{_bindir}/flask-2
 %{py_sitescriptdir}/flask
-%if "%{py_ver}" > "2.4"
 %{py_sitescriptdir}/Flask-%{version}-py*.egg-info
-%endif
 %{_examplesdir}/%{name}-%{version}
 %endif
 
