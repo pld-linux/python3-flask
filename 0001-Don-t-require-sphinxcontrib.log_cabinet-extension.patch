@@ -7,16 +7,14 @@ Subject: Don't require sphinxcontrib.log_cabinet extension
  docs/conf.py | 1 -
  1 file changed, 1 deletion(-)
 
-diff --git a/docs/conf.py b/docs/conf.py
-index 0417244..dd13886 100644
---- a/docs/conf.py
-+++ b/docs/conf.py
-@@ -14,7 +14,6 @@ master_doc = "index"
+diff -urNp -x '*.orig' Flask-2.0.2.org/docs/conf.py Flask-2.0.2/docs/conf.py
+--- Flask-2.0.2.org/docs/conf.py	2021-10-01 16:21:57.000000000 +0000
++++ Flask-2.0.2/docs/conf.py	2021-10-13 09:57:24.866571598 +0000
+@@ -15,7 +15,6 @@ master_doc = "index"
  extensions = [
      "sphinx.ext.autodoc",
      "sphinx.ext.intersphinx",
 -    "sphinxcontrib.log_cabinet",
      "pallets_sphinx_themes",
      "sphinx_issues",
- ]
-
+     "sphinx_tabs.tabs",
