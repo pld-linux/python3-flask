@@ -7,13 +7,13 @@
 Summary:	A microframework based on Werkzeug, Jinja2 and good intentions
 Summary(pl.UTF-8):	Mikroszkielet oparty na Werkzeugu, Jinja2 i dobrych intencjach
 Name:		python3-%{module}
-Version:	2.0.2
-Release:	3
+Version:	2.2.2
+Release:	1
 License:	BSD
 Group:		Development/Languages/Python
 #Source0Download: https://pypi.python.org/simple/Flask
 Source0:	https://files.pythonhosted.org/packages/source/F/Flask/Flask-%{version}.tar.gz
-# Source0-md5:	f875da30335908956e2f9f3d0f224f2d
+# Source0-md5:	c0d2276cb7d59a06d62c915da9c77ba6
 Patch0:		0001-Don-t-require-sphinxcontrib.log_cabinet-extension.patch
 URL:		https://flask.palletsprojects.com/
 %if %{with tests} && %(locale -a | grep -q '^C\.UTF-8$'; echo $?)
@@ -32,6 +32,7 @@ BuildRequires:	python3-werkzeug >= 0.15
 %if %{with doc}
 BuildRequires:	python3-pallets-sphinx-themes
 BuildRequires:	python3-sphinx_issues
+BuildRequires:  python3-sphinx_tabs
 BuildRequires:	sphinx-pdg-3
 %endif
 BuildRequires:	rpm-pythonprov
