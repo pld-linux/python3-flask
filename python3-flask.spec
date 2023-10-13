@@ -7,27 +7,34 @@
 Summary:	A microframework based on Werkzeug, Jinja2 and good intentions
 Summary(pl.UTF-8):	Mikroszkielet oparty na Werkzeugu, Jinja2 i dobrych intencjach
 Name:		python3-%{module}
-Version:	2.2.2
+Version:	2.2.5
 Release:	1
 License:	BSD
 Group:		Development/Languages/Python
 #Source0Download: https://pypi.python.org/simple/Flask
 Source0:	https://files.pythonhosted.org/packages/source/F/Flask/Flask-%{version}.tar.gz
-# Source0-md5:	c0d2276cb7d59a06d62c915da9c77ba6
+# Source0-md5:	bbca6fb017f4d338cfddfd673e203779
 Patch0:		0001-Don-t-require-sphinxcontrib.log_cabinet-extension.patch
 URL:		https://flask.palletsprojects.com/
 %if %{with tests} && %(locale -a | grep -q '^C\.UTF-8$'; echo $?)
 BuildRequires:	glibc-localedb-all
 %endif
-BuildRequires:	python3-devel >= 1:3.6
-BuildRequires:	python3-modules >= 1:3.3
+BuildRequires:	python3-devel >= 1:3.7
+BuildRequires:	python3-modules >= 1:3.7
 BuildRequires:	python3-setuptools
 %if %{with tests}
-BuildRequires:	python3-click >= 5.1
-BuildRequires:	python3-itsdangerous >= 0.24
-BuildRequires:	python3-jinja2 >= 2.10.1
+# optional
+#BuildRequires:	python3-asgiref >= 3.2
+#BuildRequires:	python3-blinker
+BuildRequires:	python3-click >= 8.0
+#BuildRequires:	python3-dotenv
+%if "%{_ver_lt '%{py3_ver} '3.10'}" == "1"
+BuildRequires:	python3-importlib_metadata >= 3.6.0
+%endif
+BuildRequires:	python3-itsdangerous >= 2.0
+BuildRequires:	python3-jinja2 >= 3.0
 BuildRequires:	python3-pytest
-BuildRequires:	python3-werkzeug >= 0.15
+BuildRequires:	python3-werkzeug >= 2.2.2
 %endif
 %if %{with doc}
 BuildRequires:	python3-pallets-sphinx-themes
@@ -36,8 +43,8 @@ BuildRequires:  python3-sphinx_tabs
 BuildRequires:	sphinx-pdg-3
 %endif
 BuildRequires:	rpm-pythonprov
-BuildRequires:	rpmbuild(macros) >= 1.714
-Requires:	python-modules >= 1:2.7
+BuildRequires:	rpmbuild(macros) >= 1.749
+Requires:	python3-modules >= 1:3.7
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
