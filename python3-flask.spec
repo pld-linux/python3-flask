@@ -69,7 +69,7 @@ Dokumentacja do pakietu Pythona Flask.
 
 %prep
 %setup -q -n Flask-%{version}
-%patch0 -p1
+%patch -P 0 -p1
 
 %build
 %py3_build
