@@ -26,7 +26,7 @@ BuildRequires:	python3-setuptools
 %if %{with tests}
 # optional
 #BuildRequires:	python3-asgiref >= 3.2
-#BuildRequires:	python3-blinker
+BuildRequires:	python3-blinker
 BuildRequires:	python3-click >= 8.0
 #BuildRequires:	python3-dotenv
 %if "%{_ver_lt '%{py3_ver} '3.10'}" == "1"
