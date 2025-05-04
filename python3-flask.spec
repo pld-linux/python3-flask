@@ -7,20 +7,21 @@
 Summary:	A microframework based on Werkzeug, Jinja2 and good intentions
 Summary(pl.UTF-8):	Mikroszkielet oparty na Werkzeugu, Jinja2 i dobrych intencjach
 Name:		python3-%{module}
-Version:	2.2.5
-Release:	3
+Version:	3.1.0
+Release:	1
 License:	BSD
 Group:		Development/Languages/Python
 #Source0Download: https://pypi.python.org/simple/Flask
-Source0:	https://files.pythonhosted.org/packages/source/F/Flask/Flask-%{version}.tar.gz
-# Source0-md5:	bbca6fb017f4d338cfddfd673e203779
+Source0:	https://files.pythonhosted.org/packages/source/F/Flask/flask-%{version}.tar.gz
+# Source0-md5:	c95d81666442bf04f7de7db7edbe2aff
 Patch0:		0001-Don-t-require-sphinxcontrib.log_cabinet-extension.patch
 URL:		https://flask.palletsprojects.com/
 %if %{with tests} && %(locale -a | grep -q '^C\.UTF-8$'; echo $?)
 BuildRequires:	glibc-localedb-all
 %endif
+BuildRequires:	python3-build
+BuildRequires:	python3-installer
 BuildRequires:	python3-devel >= 1:3.7
-BuildRequires:	python3-modules >= 1:3.7
 BuildRequires:	python3-setuptools
 %if %{with tests}
 # optional
@@ -68,20 +69,23 @@ Documentation for Python Flask package.
 Dokumentacja do pakietu Pythona Flask.
 
 %prep
-%setup -q -n Flask-%{version}
+%setup -q -n flask-%{version}
 %patch -P 0 -p1
 
 %build
-%py3_build
+%py3_build_pyproject
 
 %if %{with tests}
-PYTHONPATH=$(pwd)/src \
+%{__python3} -m zipfile -e build-3/*.whl build-3-test
+# use explicit plugins list for reliable builds (delete PYTEST_PLUGINS if empty)
 PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
-%{__python3} -m pytest tests
+PYTEST_PLUGINS= \
+%{__python3} -m pytest -o pythonpath="$PWD/build-3-test" tests
 %endif
 
 %if %{with doc}
-PYTHONPATH=$(pwd)/src \
+%{__python3} -m zipfile -e build-3/*.whl build-3-doc
+PYTHONPATH=$(pwd)/build-3-doc \
 %{__make} -C docs html \
 	SPHINXBUILD=sphinx-build-3
 %endif
@@ -89,7 +93,7 @@ PYTHONPATH=$(pwd)/src \
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%py3_install
+%py3_install_pyproject
 
 %{__mv} $RPM_BUILD_ROOT%{_bindir}/flask{,-3}
 
@@ -101,10 +105,10 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc CHANGES.rst LICENSE.rst README.rst
+%doc CHANGES.rst LICENSE.txt README.md
 %attr(755,root,root) %{_bindir}/flask-3
 %{py3_sitescriptdir}/flask
-%{py3_sitescriptdir}/Flask-%{version}-py*.egg-info
+%{py3_sitescriptdir}/flask-%{version}.dist-info
 %{_examplesdir}/python3-%{module}-%{version}
 
 %if %{with doc}

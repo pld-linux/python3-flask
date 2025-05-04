@@ -1,20 +1,10 @@
-From fa0e83cd6d5ca44c1583624ef4373730dca05d16 Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Ond=C5=99ej=20Nov=C3=BD?= <onovy@debian.org>
-Date: Mon, 14 May 2018 14:50:56 +0200
-Subject: Don't require sphinxcontrib.log_cabinet extension
-
----
- docs/conf.py | 1 -
- 1 file changed, 1 deletion(-)
-
-diff -urNp -x '*.orig' Flask-2.0.2.org/docs/conf.py Flask-2.0.2/docs/conf.py
---- Flask-2.0.2.org/docs/conf.py	2021-10-01 16:21:57.000000000 +0000
-+++ Flask-2.0.2/docs/conf.py	2021-10-13 09:57:24.866571598 +0000
-@@ -15,7 +15,6 @@ master_doc = "index"
- extensions = [
+--- flask-3.1.0/docs/conf.py~	2024-11-13 19:20:07.000000000 +0100
++++ flask-3.1.0/docs/conf.py	2025-05-04 12:07:40.189319001 +0200
+@@ -16,7 +16,6 @@
      "sphinx.ext.autodoc",
+     "sphinx.ext.extlinks",
      "sphinx.ext.intersphinx",
 -    "sphinxcontrib.log_cabinet",
-     "pallets_sphinx_themes",
-     "sphinx_issues",
      "sphinx_tabs.tabs",
+     "pallets_sphinx_themes",
+ ]
