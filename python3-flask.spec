@@ -1,6 +1,6 @@
 #
 # Conditional build:
-%bcond_without  doc	# Sphinx documentation
+%bcond_without	doc	# Sphinx documentation
 %bcond_without	tests	# unit tests
 
 %define 	module	flask
@@ -19,35 +19,34 @@ URL:		https://flask.palletsprojects.com/
 %if %{with tests} && %(locale -a | grep -q '^C\.UTF-8$'; echo $?)
 BuildRequires:	glibc-localedb-all
 %endif
-BuildRequires:	python3-asgiref
 BuildRequires:	python3-build
+BuildRequires:	python3-flit_core < 4
 BuildRequires:	python3-installer
-BuildRequires:	python3-devel >= 1:3.7
-BuildRequires:	python3-setuptools
+BuildRequires:	python3-devel >= 1:3.9
 %if %{with tests}
+BuildRequires:	python3-asgiref >= 3.2
+BuildRequires:	python3-blinker >= 1.9.0
+BuildRequires:	python3-click >= 8.1.3
 # optional
-#BuildRequires:	python3-asgiref >= 3.2
-BuildRequires:	python3-blinker
-BuildRequires:	python3-click >= 8.0
 #BuildRequires:	python3-dotenv
-%if "%{_ver_lt '%{py3_ver} '3.10'}" == "1"
+%if "%{_ver_lt %{py3_ver} 3.10}" == "1"
 BuildRequires:	python3-importlib_metadata >= 3.6.0
 %endif
-BuildRequires:	python3-itsdangerous >= 2.0
-BuildRequires:	python3-jinja2 >= 3.0
+BuildRequires:	python3-itsdangerous >= 2.2.0
+BuildRequires:	python3-jinja2 >= 3.1.2
+BuildRequires:	python3-markupsafe >= 2.1.1
 BuildRequires:	python3-pytest
-BuildRequires:	python3-werkzeug >= 2.2.2
+BuildRequires:	python3-werkzeug >= 3.1.0
 %endif
 %if %{with doc}
 BuildRequires:	python3-pallets-sphinx-themes
-BuildRequires:	python3-sphinx_issues
-BuildRequires:  python3-sphinx_tabs
+BuildRequires:	python3-sphinx_tabs
 BuildRequires:	sphinx-pdg-3
 %endif
 BuildRequires:	rpm-pythonprov
-BuildRequires:	rpmbuild(macros) >= 1.749
-Requires:	python3-asgiref
-Requires:	python3-modules >= 1:3.7
+BuildRequires:	rpmbuild(macros) >= 2.044
+Requires:	python3-asgiref >= 3.2
+Requires:	python3-modules >= 1:3.9
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -77,17 +76,18 @@ Dokumentacja do pakietu Pythona Flask.
 %build
 %py3_build_pyproject
 
-%if %{with tests}
+%if %{with tests} || %{with doc}
+# one test and docs require package metadata
 %{__python3} -m zipfile -e build-3/*.whl build-3-test
-# use explicit plugins list for reliable builds (delete PYTEST_PLUGINS if empty)
+%endif
+
+%if %{with tests}
 PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
-PYTEST_PLUGINS= \
 %{__python3} -m pytest -o pythonpath="$PWD/build-3-test" tests
 %endif
 
 %if %{with doc}
-%{__python3} -m zipfile -e build-3/*.whl build-3-doc
-PYTHONPATH=$(pwd)/build-3-doc \
+PYTHONPATH=$(pwd)/build-3-test \
 %{__make} -C docs html \
 	SPHINXBUILD=sphinx-build-3
 %endif
